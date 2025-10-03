@@ -3,6 +3,8 @@ import { assets, menuLinks } from "../assets/assets";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useAppContext } from "../context/AppContext";
 import toast from "react-hot-toast";
+import { motion } from "motion/react";
+
 
 const Navbar = () => {
     const { setShowLogin, user, logout, isOwner, axios, setIsOwner } = useAppContext();
@@ -30,12 +32,17 @@ const Navbar = () => {
     }
 
     return (
-        <div className={`flex items-center justify-between px-6 md:px-16 lg:px-24 xl:px-32 
+        <div 
+            className={`flex items-center justify-between px-6 md:px-16 lg:px-24 xl:px-32 
                         py-4 text-gray-600 border-b border-borderColor relative transition-all
                         ${location.pathname === '/' && "bg-light"}`}
         >
             <Link to="/">
-                <img src={assets.logo} alt="" />
+                <motion.img 
+                    whileHover={{ scale: 1.05 }}
+                    src={assets.logo} 
+                    alt="" 
+                />
             </Link>
 
             <div className={`max-sm:fixed max-sm:h-screen max-sm:w-full max-sm:top-16 max-sm:border-t
@@ -80,8 +87,7 @@ const Navbar = () => {
             <button onClick={() => setOpen(!open)} className="sm:hidden cursor-pointer" aria-label="Menu" >
                 <img src={open ? assets.close_icon : assets.menu_icon} alt="menu" />
             </button>
-
-            
+              
         </div>
     );
 };

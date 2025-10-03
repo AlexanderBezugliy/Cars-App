@@ -10,7 +10,7 @@ bookingRouter.post("/check-availability", chackAvailabilityOfCar);
 bookingRouter.post("/create", protect, createBooking);
 bookingRouter.get("/user", protect, getUserBookings);
 bookingRouter.get("/owner", protect, getOwnerBookings);
-bookingRouter.get("/change-status", protect, changeBookingStatus);
+bookingRouter.post("/change-status", protect, changeBookingStatus);
 
 
 export default bookingRouter;

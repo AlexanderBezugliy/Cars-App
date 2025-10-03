@@ -114,7 +114,7 @@ export const deleteCar = async (req, res) => {
         }
 
         car.owner = null;
-        car.isAvaliable(false);
+        car.isAvaliable = false;
 
         await car.save()
 
@@ -128,7 +128,7 @@ export const deleteCar = async (req, res) => {
 // API to get Dashboard Data
 export const getDashboardData = async (req, res) => {
     try {
-        const { _id, role } = res.user;
+        const { _id, role } = req.user;
 
         if (role !== 'owner') {
             return res.json({ success: false, message: "Unauthorized"})
@@ -151,7 +151,7 @@ export const getDashboardData = async (req, res) => {
             totalCars: cars.length,
             totalBookings: bookings.length,
             pendingBookings: bookings.length,
-            complatedBookings: completedBookings.length,
+            completedBookings: completedBookings.length,
             recentBookings: bookings.slice(0, 3),
             monthlyRevenue
         }
@@ -167,7 +167,7 @@ export const getDashboardData = async (req, res) => {
 // API to update User Img
 export const updateUserImage = async (req, res) => {
     try {
-        const {_id} = req.body;
+        const {_id} = req.user;
 
         const imageFile = req.file;
         //Upload Image to ImageKit
@@ -191,7 +191,8 @@ export const updateUserImage = async (req, res) => {
 
         const image = optimizedImageUrl;
 
-        await User.findById(_id, {image});
+        // await User.findById(_id, {image});
+        await User.findByIdAndUpdate(_id, { image: image }, { new: true });
 
         res.json({ success: true, message: "Image Updated" })
 

@@ -28,7 +28,7 @@ app.use(express.json());
 app.get('/', (req, res) => res.send("Server is running!"));
 app.use('/api/user', userRouter);
 app.use('/api/owner', ownerRouter);
-app.use('/api/booking', bookingRouter);
+app.use('/api/bookings', bookingRouter);
 
 
 // Определяет порт, на котором будет работать сервер. Он пытается использовать порт из переменных окружения (.env), если он задан. Если нет, он использует порт 3000 по умолчанию.

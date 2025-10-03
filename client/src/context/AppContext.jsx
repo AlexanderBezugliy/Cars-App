@@ -18,8 +18,9 @@ export const AppProvider = ({ children }) => {
     const [user, setUser] = useState(null);
     const [isOwner, setIsOwner] = useState(false);
     const [showLogin, setShowLogin] = useState(false);
+
     const [pickupDate, setPickupDate] = useState('');
-    const [returnData, setReturnData] = useState('');
+    const [returnDate, setReturnDate] = useState('');
 
     const [cars, setCars] = useState([]);
 
@@ -99,9 +100,10 @@ export const AppProvider = ({ children }) => {
         setCars,
         pickupDate,
         setPickupDate,
-        returnData,
-        setReturnData
+        returnDate,
+        setReturnDate
     }
+
 
     return (
         <AppContext.Provider value={value}>

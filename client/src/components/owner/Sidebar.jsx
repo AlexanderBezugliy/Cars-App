@@ -1,17 +1,35 @@
 import React, { useState } from 'react'
-import { assets, dummyUserData, ownerMenuLinks } from '../../assets/assets'
+import { assets, ownerMenuLinks } from '../../assets/assets'
 import { NavLink, useLocation } from 'react-router-dom';
+import { useAppContext } from '../../context/AppContext';
+import toast from 'react-hot-toast';
 
 const Sidebar = () => {
     const [image, setImage] = useState('');
 
-    const user = dummyUserData;
+    const { user, axios, fetchUser } = useAppContext();
+
     const location = useLocation();
 
     // edit IMG
     const updateImage = async () => {
-        user.image = URL.createObjectURL(image);
-        setImage('');
+        try {
+            const formData = new FormData()
+
+            formData.append('image', image)
+
+            const { data } = await axios.post('/api/owner/update-image', formData)
+
+            if (data.success) {
+                fetchUser()
+                toast.success(data.message)
+                setImage('')
+            } else {
+                toast.error(data.message)
+            }
+        } catch (error) {
+            toast.error(error.message)
+        }
     }
 
     return (
@@ -19,7 +37,7 @@ const Sidebar = () => {
             <div className='group relative'>
                 <label htmlFor="image">
                     <img 
-                        src={image ? URL.createObjectURL(image) : user.image || "https://images.unsplash.com/photo-1633332755192-727a05c4013d?q=80&w=300"} 
+                        src={image ? URL.createObjectURL(image) : user?.image || "https://images.unsplash.com/photo-1633332755192-727a05c4013d?q=80&w=300"} 
                         alt="" 
                         className='h-9 md:h-14 w-9 md:w-14 rounded-full mx-auto' 
                     />
@@ -39,14 +57,12 @@ const Sidebar = () => {
             </div>
 
             {image && (
-                <button className='absolute top-0 right-0 flex p-2 gap-1 bg-primary/10 text-primary cursor-pointer'>
+                <button 
+                    onClick={updateImage} 
+                    className='absolute top-0 right-0 flex p-2 gap-1 bg-primary/10 text-primary cursor-pointer'
+                >
                     Save 
-                    <img 
-                        onClick={updateImage}
-                        src={assets.check_icon} 
-                        width={13} 
-                        alt=""
-                    />
+                    <img src={assets.check_icon} width={13} alt="" />
                 </button>
             )}
             
